@@ -1,6 +1,8 @@
 
 # Adafruit-MAX31855-V1.0.3-Mod-M ![Build Status](https://github.com/adafruit/Adafruit-MAX31855-library/workflows/Arduino%20Library%20CI/badge.svg)
 
+<img src="https://raw.githubusercontent.com/GadgetAngel/Adafruit-MAX31865-V1.1.0-Mod-M/blob/master/images/269-04.jpg?raw=true" />
+
 Driver for the [Adafruit MAX31855 Thermocouple Amplifier](https://www.adafruit.com/product/269)
 
 ## Info
