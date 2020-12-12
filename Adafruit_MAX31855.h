@@ -25,7 +25,7 @@
 
 class Adafruit_MAX31855 {
  public:
-  Adafruit_MAX31855(int8_t _sclk, int8_t _cs, int8_t _miso);
+  Adafruit_MAX31855(int8_t _cs, int8_t _miso, int8_t _sclk);
   Adafruit_MAX31855(int8_t _cs);
 
   void begin(void);
@@ -36,7 +36,7 @@ class Adafruit_MAX31855 {
   uint32_t readRaw32(void);
 
  private:
-  boolean initialized;
+  bool initialized;
 
   int8_t sclk, miso, cs;
   uint32_t spiread32(void);
