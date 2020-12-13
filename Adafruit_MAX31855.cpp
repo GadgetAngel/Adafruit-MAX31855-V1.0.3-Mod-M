@@ -15,6 +15,9 @@
  ****************************************************/
 
 #include "Adafruit_MAX31855.h"
+
+#include "../../../../Marlin/src/HAL/shared/Delay.h"
+
 #ifdef __AVR
   #include <avr/pgmspace.h>
 #elif defined(ESP8266)
@@ -24,6 +27,13 @@
 #include <stdlib.h>
 #include <SPI.h>
 
+#ifdef __AVR
+  static SPISettings max31855_spisettings = 
+      SPISettings(4000000, MSBFIRST, SPI_MODE0); 
+#else
+  static SPISettings max31855_spisettings =
+      SPISettings(SPI_QUARTER_SPEED, MSBFIRST, SPI_MODE0);
+#endif
 
 Adafruit_MAX31855::Adafruit_MAX31855( int8_t _cs, int8_t _miso, int8_t _sclk) {
   sclk = _sclk;
@@ -143,12 +153,13 @@ uint32_t Adafruit_MAX31855::spiread32(void) {
   }
 
   digitalWrite(cs, LOW);
-  delay(1);
+  DELAY_US(1000);
+  //delay(1);
 
   if(sclk == -1) {
     // hardware SPI
 
-    SPI.beginTransaction(SPISettings(4000000, MSBFIRST, SPI_MODE0));
+    SPI.beginTransaction(max31855_spisettings);
 
     d = SPI.transfer(0);
     d <<= 8;
@@ -163,18 +174,21 @@ uint32_t Adafruit_MAX31855::spiread32(void) {
     // software SPI
 
     digitalWrite(sclk, LOW);
-    delay(1);
+    DELAY_US(1000);    
+    //delay(1);
 
     for (i=31; i>=0; i--) {
       digitalWrite(sclk, LOW);
-      delay(1);
+      DELAY_US(1000);
+      //delay(1);
       d <<= 1;
       if (digitalRead(miso)) {
 	      d |= 1;
       }
       
       digitalWrite(sclk, HIGH);
-      delay(1);
+      DELAY_US(1000);
+      //delay(1);
     }
   }
 
