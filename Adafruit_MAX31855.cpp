@@ -16,6 +16,10 @@
 
 #include "Adafruit_MAX31855.h"
 
+#ifndef __AVR
+  #include "../../../../Marlin/src/HAL/shared/HAL_SPI.h"
+#endif
+
 #include "../../../../Marlin/src/HAL/shared/Delay.h"
 
 #ifdef __AVR
@@ -36,9 +40,9 @@
 #endif
 
 Adafruit_MAX31855::Adafruit_MAX31855( int8_t _cs, int8_t _miso, int8_t _sclk) {
-  sclk = _sclk;
   cs = _cs;
-  miso = _miso;
+  miso = _miso;  
+  sclk = _sclk;
 
   initialized = false;
 }
@@ -59,7 +63,8 @@ void Adafruit_MAX31855::begin(void) {
     // hardware SPI
     //start and configure hardware SPI
     SPI.begin();
-  } else {
+  } 
+  else {
     pinMode(sclk, OUTPUT); 
     pinMode(miso, INPUT);
   }
@@ -103,7 +108,6 @@ double Adafruit_MAX31855::readCelsius(void) {
   Serial.print("\tInternal Temp: "); Serial.println(internal);
   */
 
-  
   if (v & 0x7) {
     // uh oh, a serious problem!
     return NAN; 
@@ -127,7 +131,7 @@ double Adafruit_MAX31855::readCelsius(void) {
   return centigrade;
 }
 
-uint8_t Adafruit_MAX31855::readError() {
+uint8_t Adafruit_MAX31855::readError(void) {
   return spiread32() & 0x7;
 }
 
@@ -154,7 +158,6 @@ uint32_t Adafruit_MAX31855::spiread32(void) {
 
   digitalWrite(cs, LOW);
   DELAY_US(1000);
-  //delay(1);
 
   if(sclk == -1) {
     // hardware SPI
@@ -170,17 +173,16 @@ uint32_t Adafruit_MAX31855::spiread32(void) {
     d |= SPI.transfer(0);
 
     SPI.endTransaction();
-  } else {
+  } 
+  else {
     // software SPI
 
     digitalWrite(sclk, LOW);
     DELAY_US(1000);    
-    //delay(1);
 
     for (i=31; i>=0; i--) {
       digitalWrite(sclk, LOW);
       DELAY_US(1000);
-      //delay(1);
       d <<= 1;
       if (digitalRead(miso)) {
 	      d |= 1;
@@ -188,7 +190,7 @@ uint32_t Adafruit_MAX31855::spiread32(void) {
       
       digitalWrite(sclk, HIGH);
       DELAY_US(1000);
-      //delay(1);
+
     }
   }
 

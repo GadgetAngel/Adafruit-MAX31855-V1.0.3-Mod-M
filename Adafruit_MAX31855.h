@@ -32,7 +32,7 @@ class Adafruit_MAX31855 {
   double readInternal(void);
   double readCelsius(void);
   double readFarenheit(void);
-  uint8_t readError();
+  uint8_t readError(void);
   uint32_t readRaw32(void);
 
  private:
