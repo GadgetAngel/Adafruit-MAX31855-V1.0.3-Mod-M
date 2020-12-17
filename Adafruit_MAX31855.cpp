@@ -280,7 +280,6 @@ uint32_t Adafruit_MAX31855::readRaw32(void) {
         Serial.println(d, HEX);
       #endif
       return d;
-      #endif
     }
     else
       return d;
