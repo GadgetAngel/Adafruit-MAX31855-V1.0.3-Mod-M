@@ -15,6 +15,7 @@
  ****************************************************/
 
 #include "Adafruit_MAX31855.h"
+#define DEBUG
 
 #ifndef __AVR
   #include "../../../../Marlin/src/HAL/shared/HAL_SPI.h"
@@ -268,12 +269,22 @@ uint32_t Adafruit_MAX31855::readRaw32(void) {
   else {
     first_reading = false;
     d = spiread32();
-    if (d & 0x07)
-      return spiread32();
+    if ((d >> 8) == 0x007FFD1Dul) {
+      #ifdef DEBUG
+        Serial.print("\n\n1st Reading: ");
+        Serial.println(d, HEX);
+      #endif
+      d = spiread32();
+      #ifdef DEBUG
+        Serial.print("\n\n2nd Reading: ");
+        Serial.println(d, HEX);
+      #endif
+      return d;
+      #endif
+    }
     else
       return d;
   }
-}
 
 /**************************************************************************/
 
