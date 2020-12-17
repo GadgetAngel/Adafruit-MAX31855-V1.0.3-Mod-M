@@ -50,7 +50,7 @@
     @param pin_mappping set to 1 for positive pin values
 */
 /**************************************************************************/
-Adafruit_MAX31865::Adafruit_MAX31855(uint32_t spi_cs, uint32_t spi_miso,
+Adafruit_MAX31855::Adafruit_MAX31855(uint32_t spi_cs, uint32_t spi_miso,
                                      uint32_t spi_clk, uint8_t pin_mapping) {
   __cs = spi_cs;
   __miso = spi_miso;
@@ -75,7 +75,7 @@ Adafruit_MAX31865::Adafruit_MAX31855(uint32_t spi_cs, uint32_t spi_miso,
     @param pin_mapping set to 1 for positive pin values
 */
 /**************************************************************************/
-Adafruit_MAX31865::Adafruit_MAX31855(uint32_t spi_cs, uint8_t pin_mapping) {
+Adafruit_MAX31855::Adafruit_MAX31855(uint32_t spi_cs, uint8_t pin_mapping) {
   __cs = spi_cs;
   __sclk = __miso = -1UL;  //-1UL or 0xFFFFFFFF
   __pin_mapping = pin_mapping;
