@@ -261,15 +261,15 @@ double Adafruit_MAX31855::readFarenheit(void) {
 /**************************************************************************/
 uint32_t Adafruit_MAX31855::readRaw32(void) {
   uint32_t d = 0;
-  // on boot up of the MAX31855 junk is read sometimes
-  // so throw away the very first reading if it shows
-  // the error bits all set.
+  // on boot up of the MAX31855 reads junk on the very first temperature
+  // sample. Throw away the very first reading
+  // if the upper 20 bits are equal to 0x7FFD1.
   if (!first_reading)
     return spiread32();
   else {
     first_reading = false;
     d = spiread32();
-    if ((d >> 8) == 0x007FFD1Dul) {
+    if ((d >> 12) == 0x0007FFD1) {
       #ifdef DEBUG
         Serial.print("\n\n1st Reading: ");
         Serial.println(d, HEX);
