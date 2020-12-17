@@ -25,8 +25,8 @@
 
 class Adafruit_MAX31855 {
  public:
-  Adafruit_MAX31855(int8_t spi_cs, int8_t spi_miso, int8_t spi_sclk, uint8_t pin_mapping);
-  Adafruit_MAX31855(int8_t spi_cs, uint8_t pin_mapping);
+  Adafruit_MAX31855(uint32_t spi_cs, uint32_t spi_miso, uint32_t spi_sclk, uint8_t pin_mapping);
+  Adafruit_MAX31855(uint32_t spi_cs, uint8_t pin_mapping);
 
   Adafruit_MAX31855(int8_t spi_cs, int8_t spi_miso, int8_t spi_sclk);
   Adafruit_MAX31855(int8_t spi_cs);
