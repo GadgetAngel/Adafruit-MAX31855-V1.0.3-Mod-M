@@ -263,13 +263,13 @@ uint32_t Adafruit_MAX31855::readRaw32(void) {
   uint32_t d = 0;
   // on boot up of the MAX31855 reads junk on the very first temperature
   // sample. Throw away the very first reading
-  // if the upper 20 bits are equal to 0x7FFD1.
+  // if the upper 8 bits are equal to 0x7FF.
   if (!first_reading)
     return spiread32();
   else {
     first_reading = false;
     d = spiread32();
-    if ((d >> 12) == 0x0007FFD1) {
+    if ((d >> 20) == 0x000007FF) {
       #ifdef DEBUG
         Serial.print("\n\n1st Reading: ");
         Serial.println(d, HEX);
