@@ -44,6 +44,7 @@ class Adafruit_MAX31855 {
   int8_t _sclk, _miso, _cs;
   uint32_t __sclk, __miso, __cs;
   uint8_t __pin_mapping = 0x00;
+  bool first_reading = true;
 
   uint32_t spiread32(void);
 };

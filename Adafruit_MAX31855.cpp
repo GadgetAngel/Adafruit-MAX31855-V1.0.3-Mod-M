@@ -259,7 +259,20 @@ double Adafruit_MAX31855::readFarenheit(void) {
 */
 /**************************************************************************/
 uint32_t Adafruit_MAX31855::readRaw32(void) {
-  return spiread32();
+  uint32_t d = 0;
+  // on boot up of the MAX31855 junk is read sometimes
+  // so throw away the very first reading if it shows
+  // the error bits all set.
+  if (!first_reading)
+    return spiread32();
+  else {
+    first_reading = false;
+    d = spiread32();
+    if (d & 0x07)
+      return spiread32();
+    else
+      return d;
+  }
 }
 
 /**************************************************************************/
@@ -303,7 +316,7 @@ uint32_t Adafruit_MAX31855::spiread32(void) {
       digitalWrite(__sclk, LOW);
     DELAY_US(1000);
 
-    for (i=31; i>=0; i--) {
+    for (i = 31; i >= 0; i--) {
 
       if (!__pin_mapping)
         digitalWrite(_sclk, LOW);
