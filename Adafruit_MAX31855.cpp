@@ -349,10 +349,10 @@ uint32_t Adafruit_MAX31855::readRaw32(void) {
         SERIAL_PRINTF("   %X  ", d);
         SERIAL_ECHOLN();
       #endif
-      return d;
     }
-    else
-      return d;
+
+    return d;
+
   }
 }
 
