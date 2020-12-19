@@ -14,7 +14,7 @@
   BSD license, all text above must be included in any redistribution
  ****************************************************/
 //#define DEBUG_STM32
-#define DEBUG_STM32_SPI
+//#define DEBUG_STM32_SPI
 //#define DEBUG_LPC
 //#define DEBUG_LPC_SPI
 
