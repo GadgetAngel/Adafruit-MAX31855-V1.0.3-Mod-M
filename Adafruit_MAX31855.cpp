@@ -14,11 +14,16 @@
   BSD license, all text above must be included in any redistribution
  ****************************************************/
 //#define DEBUG_STM32
+#define DEBUG_STM32_SPI
 //#define DEBUG_LPC
 //#define DEBUG_LPC_SPI
 
 #if defined(STM32F407IX) && defined(DEBUG_STM32)
   #define HAS_STM32_DEBUG 1
+#endif
+
+#if defined(STM32F407IX) && defined(DEBUG_STM32_SPI)
+  #define HAS_STM32_DEBUG_SPI 1
 #endif
 
 #if defined(TARGET_LPC1768) && defined(DEBUG_LPC)
@@ -195,24 +200,42 @@ void Adafruit_MAX31855::begin(void) {
     }
   }
 
-  #if HAS_STM32_DEBUG
+  #if HAS_STM32_DEBUG_SPI
     if (!__pin_mapping) {
       Serial.print("\n\n_cs: ");
       Serial.print(_cs);
-      Serial.print(" _miso: ");
+      Serial.print(" _cs: 0x");
+      Serial.print(_cs, HEX);
+      uint32_t cs2 = 0;
+      cs2 = _cs;
+      Serial.print("\n uint32_t cs2: ");
+      Serial.print(cs2);
+      Serial.print("  cs2: 0x");
+      Serial.print(cs2, HEX);
+      Serial.print("\n _miso: ");
       Serial.print(_miso);
-      Serial.print(" _sclk: ");
+      Serial.print(" _miso: 0x");
+      Serial.print(_miso, HEX);
+      Serial.print("\n _sclk: ");
       Serial.print(_sclk);
+      Serial.print(" _sclk: 0x");
+      Serial.print(_sclk, HEX);
       Serial.print("\n\n");
     }
     else {
       Serial.print("\n\n__cs: ");
       Serial.print(__cs);
-      Serial.print(" __miso: ");
+      Serial.print(" __cs: 0x");
+      Serial.print(__cs, HEX);
+      Serial.print("\n __miso: ");
       Serial.print(__miso);
-      Serial.print(" __sclk: ");
+      Serial.print(" __miso: 0x");
+      Serial.print(__miso, HEX);
+      Serial.print("\n __sclk: ");
       Serial.print(__sclk);
-      Serial.print(" __pin_mapping: ");
+      Serial.print(" __sclk: 0x");
+      Serial.print(__sclk, HEX);
+      Serial.print("\n __pin_mapping: ");
       Serial.print(__pin_mapping);
       Serial.print("\n\n");
     }
