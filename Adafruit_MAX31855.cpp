@@ -29,6 +29,10 @@
   #define HAS_LPC1768_DEBUG_SPI 1
 #endif
 
+#if HAS_LPC1768_DEBUG || HAS_LPC1768_DEBUG_SPI
+  #include "../../../../Marlin/src/inc/MarlinConfig.h"
+#endif
+
 #include "Adafruit_MAX31855.h"
 
 #include "../../../../Marlin/src/HAL/shared/Delay.h"
