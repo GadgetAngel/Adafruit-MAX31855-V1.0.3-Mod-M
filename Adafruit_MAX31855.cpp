@@ -197,14 +197,14 @@ void Adafruit_MAX31855::begin(void) {
     if (!__pin_mapping) {
       SERIAL_ECHOLN();
       SERIAL_ECHOLNPAIR("Regular call for _cs: ", _cs ," _miso: ", _miso ," _sclk: ", _sclk);
-      SERIAL_PRINTF("Regular call for _cs: %X  _miso: %X  _sclk: %X  ", _cs, _miso, _sclk);
+      SERIAL_PRINTF("Regular call for _cs: 0x%X  _miso: 0x%X  _sclk: 0x%X  ", _cs, _miso, _sclk);
       SERIAL_ECHOLN();
       SERIAL_ECHOLN();
     }
     else {
       SERIAL_ECHOLN();
       SERIAL_ECHOLNPAIR("PIN_MAPPING call for __cs: ", __cs ," __miso: ", __miso ," __sclk: ", __sclk);
-      SERIAL_PRINTF("PIN_MAPPING call for __cs: %X  __miso: %X  __sclk: %X  ", __cs, __miso, __sclk);
+      SERIAL_PRINTF("PIN_MAPPING call for __cs: 0x%X  __miso: 0x%X  __sclk: 0x%X  ", __cs, __miso, __sclk);
       SERIAL_ECHOLN();
       SERIAL_ECHOLN();
     }
@@ -334,7 +334,7 @@ uint32_t Adafruit_MAX31855::readRaw32(void) {
         SERIAL_ECHOLN();
         SERIAL_ECHOLN();
         SERIAL_ECHO("1st Reading:");
-        SERIAL_PRINTF("   %X  ", d);
+        SERIAL_PRINTF("   0x%X  ", d);
         SERIAL_ECHOLN();
       #endif
       d = spiread32();
@@ -346,7 +346,7 @@ uint32_t Adafruit_MAX31855::readRaw32(void) {
         SERIAL_ECHOLN();
         SERIAL_ECHOLN();
         SERIAL_ECHO("2nd Reading:");
-        SERIAL_PRINTF("   %X  ", d);
+        SERIAL_PRINTF("   0x%X  ", d);
         SERIAL_ECHOLN();
       #endif
     }
