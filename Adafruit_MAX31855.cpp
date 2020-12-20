@@ -18,19 +18,19 @@
 //#define DEBUG_LPC
 //#define DEBUG_LPC_SPI
 
-#if defined(STM32F407IX) && defined(DEBUG_STM32)
+#if defined(ARDUINO_ARCH_STM32) && defined(DEBUG_STM32)
   #define HAS_STM32_DEBUG 1
 #endif
 
-#if defined(STM32F407IX) && defined(DEBUG_STM32_SPI)
+#if defined(ARDUINO_ARCH_STM32) && defined(DEBUG_STM32_SPI)
   #define HAS_STM32_DEBUG_SPI 1
 #endif
 
-#if defined(TARGET_LPC1768) && defined(DEBUG_LPC)
+#if defined(ARDUINO_ARCH_LPC176X) && defined(DEBUG_LPC)
   #define HAS_LPC1768_DEBUG 1
 #endif
 
-#if defined(TARGET_LPC1768) && defined(DEBUG_LPC_SPI)
+#if defined(ARDUINO_ARCH_LPC176X) && defined(DEBUG_LPC_SPI)
   #define HAS_LPC1768_DEBUG_SPI 1
 #endif
 
@@ -299,7 +299,35 @@ double Adafruit_MAX31855::readCelsius(void) {
 
   int32_t v;
 
-  v = spiread32();
+  if (!first_reading)
+    v = spiread32();
+  else {
+    first_reading = false;
+    v = spiread32();
+    #if HAS_STM32_DEBUG
+      Serial.print("\n\n1st Reading: 0x");
+      Serial.println(d, HEX);
+    #endif
+    #if HAS_LPC1768_DEBUG
+      SERIAL_ECHOLN();
+      SERIAL_ECHOLN();
+      SERIAL_ECHO("1st Reading:");
+      SERIAL_PRINTF("   0x%X  ", d);
+      SERIAL_ECHOLN();
+    #endif
+    v = spiread32();
+    #if HAS_STM32_DEBUG
+      Serial.print("\n\n2nd Reading: 0x");
+      Serial.println(d, HEX);
+    #endif
+    #if HAS_LPC1768_DEBUG
+      SERIAL_ECHOLN();
+      SERIAL_ECHOLN();
+      SERIAL_ECHO("2nd Reading:");
+      SERIAL_PRINTF("   0x%X  ", d);
+      SERIAL_ECHOLN();
+    #endif
+  }
 
   //Serial.print("0x"); Serial.println(v, HEX);
 
@@ -341,7 +369,14 @@ double Adafruit_MAX31855::readCelsius(void) {
 */
 /**************************************************************************/
 uint8_t Adafruit_MAX31855::readError(void) {
-  return spiread32() & 0x7;
+
+  if (!first_reading)
+    return spiread32() & 0x7;
+  else {
+    first_reading = false;
+    spiread32();
+    return spiread32() & 0x7;
+  }
 }
 
 /**************************************************************************/
@@ -374,34 +409,30 @@ uint32_t Adafruit_MAX31855::readRaw32(void) {
   else {
     first_reading = false;
     d = spiread32();
-    if ((d >> 20) == 0x000007FF) {
-      #if HAS_STM32_DEBUG
-        Serial.print("\n\n1st Reading: 0x");
-        Serial.println(d, HEX);
-      #endif
-      #if HAS_LPC1768_DEBUG
-        SERIAL_ECHOLN();
-        SERIAL_ECHOLN();
-        SERIAL_ECHO("1st Reading:");
-        SERIAL_PRINTF("   0x%X  ", d);
-        SERIAL_ECHOLN();
-      #endif
-      d = spiread32();
-      #if HAS_STM32_DEBUG
-        Serial.print("\n\n2nd Reading: 0x");
-        Serial.println(d, HEX);
-      #endif
-      #if HAS_LPC1768_DEBUG
-        SERIAL_ECHOLN();
-        SERIAL_ECHOLN();
-        SERIAL_ECHO("2nd Reading:");
-        SERIAL_PRINTF("   0x%X  ", d);
-        SERIAL_ECHOLN();
-      #endif
-    }
-
+    #if HAS_STM32_DEBUG
+      Serial.print("\n\n1st Reading: 0x");
+      Serial.println(d, HEX);
+    #endif
+    #if HAS_LPC1768_DEBUG
+      SERIAL_ECHOLN();
+      SERIAL_ECHOLN();
+      SERIAL_ECHO("1st Reading:");
+      SERIAL_PRINTF("   0x%X  ", d);
+      SERIAL_ECHOLN();
+    #endif
+    d = spiread32();
+    #if HAS_STM32_DEBUG
+      Serial.print("\n\n2nd Reading: 0x");
+      Serial.println(d, HEX);
+    #endif
+    #if HAS_LPC1768_DEBUG
+      SERIAL_ECHOLN();
+      SERIAL_ECHOLN();
+      SERIAL_ECHO("2nd Reading:");
+      SERIAL_PRINTF("   0x%X  ", d);
+      SERIAL_ECHOLN();
+    #endif
     return d;
-
   }
 }
 
