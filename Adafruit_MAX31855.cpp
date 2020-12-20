@@ -296,9 +296,9 @@ double Adafruit_MAX31855::readInternal(void) {
 */
 /**************************************************************************/
 double Adafruit_MAX31855::readCelsius(void) {
-
   int32_t v;
 
+  // prime the SPI communication channel
   if (!first_reading)
     v = spiread32();
   else {
@@ -370,6 +370,7 @@ double Adafruit_MAX31855::readCelsius(void) {
 /**************************************************************************/
 uint8_t Adafruit_MAX31855::readError(void) {
 
+    // prime the SPI communication channel
   if (!first_reading)
     return spiread32() & 0x7;
   else {
@@ -401,9 +402,8 @@ double Adafruit_MAX31855::readFarenheit(void) {
 /**************************************************************************/
 uint32_t Adafruit_MAX31855::readRaw32(void) {
   uint32_t d = 0;
-  // on boot up of the MAX31855 reads junk on the very first temperature
-  // sample. Throw away the very first reading
-  // if the upper 8 bits are equal to 0x7FF.
+
+  // prime the SPI communication channel
   if (!first_reading)
     return spiread32();
   else {
